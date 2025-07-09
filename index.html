@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VideoTube - Modern Video Player</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header with Navigation and Ad Space -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-play-circle"></i>
+                    <span>VideoTube</span>
+                </div>
+                
+                <nav class="nav">
+                    <ul class="nav-list">
+                        <li><a href="#" class="nav-link active">Home</a></li>
+                        <li><a href="#" class="nav-link">Trending</a></li>
+                        <li><a href="#" class="nav-link">Categories</a></li>
+                        <li><a href="#" class="nav-link">About</a></li>
+                    </ul>
+                </nav>
+                
+                <div class="search-container">
+                    <input type="text" class="search-input" placeholder="Search videos...">
+                    <button class="search-btn">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+                
+                <div class="user-actions">
+                    <button class="btn-icon">
+                        <i class="fas fa-bell"></i>
+                    </button>
+                    <button class="btn-icon">
+                        <i class="fas fa-user-circle"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Header Ad Space -->
+        <div class="ad-space header-ad">
+            <div class="ad-placeholder">
+                <i class="fas fa-ad"></i>
+                <span>Advertisement Space - Header</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <div class="content-grid">
+                <!-- Video Player Section -->
+                <section class="video-section">
+                    <div class="video-player-container">
+                        <video id="mainPlayer" class="video-player" controls poster="">
+                            <source src="" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        
+                        <div class="video-overlay">
+                            <div class="play-button" id="playButton">
+                                <i class="fas fa-play"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="video-info">
+                        <h1 class="video-title" id="videoTitle">Select a video to play</h1>
+                        <div class="video-meta">
+                            <span class="views" id="videoViews">0 views</span>
+                            <span class="upload-date" id="uploadDate">Today</span>
+                        </div>
+                        
+                        <div class="video-actions">
+                            <button class="action-btn like-btn">
+                                <i class="fas fa-thumbs-up"></i>
+                                <span>Like</span>
+                            </button>
+                            <button class="action-btn dislike-btn">
+                                <i class="fas fa-thumbs-down"></i>
+                                <span>Dislike</span>
+                            </button>
+                            <button class="action-btn share-btn">
+                                <i class="fas fa-share"></i>
+                                <span>Share</span>
+                            </button>
+                            <button class="action-btn save-btn">
+                                <i class="fas fa-bookmark"></i>
+                                <span>Save</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Middle Ad Space -->
+                    <div class="ad-space middle-ad">
+                        <div class="ad-placeholder">
+                            <i class="fas fa-ad"></i>
+                            <span>Advertisement Space - Middle</span>
+                        </div>
+                    </div>
+                    
+                    <div class="video-description">
+                        <div class="description-header">
+                            <div class="channel-info">
+                                <div class="channel-avatar">
+                                    <i class="fas fa-user-circle"></i>
+                                </div>
+                                <div class="channel-details">
+                                    <h3 class="channel-name">VideoTube Channel</h3>
+                                    <span class="subscribers">1.2M subscribers</span>
+                                </div>
+                                <button class="subscribe-btn">Subscribe</button>
+                            </div>
+                        </div>
+                        
+                        <div class="description-content">
+                            <p id="videoDescription">Welcome to VideoTube! Enjoy our curated collection of videos.</p>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Sidebar with Video List -->
+                <aside class="sidebar">
+                    <div class="sidebar-header">
+                        <h2>Up Next</h2>
+                        <button class="autoplay-toggle">
+                            <i class="fas fa-toggle-on"></i>
+                            <span>Autoplay</span>
+                        </button>
+                    </div>
+                    
+                    <div class="video-list" id="videoList">
+                        <!-- Video items will be populated by JavaScript -->
+                    </div>
+                    
+                    <!-- Sidebar Ad Space -->
+                    <div class="ad-space sidebar-ad">
+                        <div class="ad-placeholder">
+                            <i class="fas fa-ad"></i>
+                            <span>Advertisement</span>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <!-- Footer Ad Space -->
+        <div class="ad-space footer-ad">
+            <div class="ad-placeholder">
+                <i class="fas fa-ad"></i>
+                <span>Advertisement Space - Footer</span>
+            </div>
+        </div>
+        
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>VideoTube</h3>
+                    <p>Your premier destination for video content. Watch, share, and discover amazing videos.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">Trending</a></li>
+                        <li><a href="#">Categories</a></li>
+                        <li><a href="#">Upload</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Community</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Report</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Copyright</a></li>
+                        <li><a href="#">Cookies</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Connect</h4>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 VideoTube. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu-overlay" id="mobileMenuOverlay">
+        <div class="mobile-menu">
+            <div class="mobile-menu-header">
+                <span class="mobile-menu-title">Menu</span>
+                <button class="mobile-menu-close" id="mobileMenuClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <nav class="mobile-nav">
+                <ul>
+                    <li><a href="#" class="mobile-nav-link">Home</a></li>
+                    <li><a href="#" class="mobile-nav-link">Trending</a></li>
+                    <li><a href="#" class="mobile-nav-link">Categories</a></li>
+                    <li><a href="#" class="mobile-nav-link">About</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div class="loading-spinner" id="loadingSpinner">
+        <div class="spinner"></div>
+    </div>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
+
