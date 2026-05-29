@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /user/
+Disallow: /config/
+Disallow: /includes/
+Disallow: /sql/
+Disallow: /cron/
+Disallow: /sponsor_go.php
+
+# Adjust SITEMAP URL after deployment
+Sitemap: /sitemap.xml

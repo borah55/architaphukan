@@ -1,0 +1,16 @@
+# Allow only via web with secret key (cron/clean.php enforces this).
+# Direct browser access is denied.
+Order allow,deny
+Deny from all
+<IfModule mod_authz_core.c>
+    Require all denied
+</IfModule>
+
+# Re-allow only the public cleanup endpoint
+<Files "clean.php">
+    Order allow,deny
+    Allow from all
+    <IfModule mod_authz_core.c>
+        Require all granted
+    </IfModule>
+</Files>
