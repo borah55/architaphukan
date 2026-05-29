@@ -55,8 +55,12 @@ $refLink = url('register.php?ref=' . $user['username']);
 
 include __DIR__ . '/../includes/header.php';
 ?>
-<h2 class="mb-3"><i class="fa fa-users text-doge me-1"></i> Referral Program</h2>
-<p class="text-muted">Share your link and earn <strong><?= $pct ?>%</strong> of every claim your referrals make &mdash; for life.</p>
+<div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4">
+    <div>
+        <h2 class="fw-bold mb-1"><i class="fa fa-users text-doge me-2"></i> Referral program</h2>
+        <p class="text-muted-2 mb-0 small">Share your link, earn <strong class="text-doge"><?= $pct ?>%</strong> of every claim your invitees make for life.</p>
+    </div>
+</div>
 
 <div class="row g-3 mb-4">
     <div class="col-md-4"><div class="stat-card"><div class="stat-label">Total referrals</div><div class="stat-value"><?= number_format($totalRefs) ?></div></div></div>
@@ -114,9 +118,9 @@ include __DIR__ . '/../includes/header.php';
                     <?php if (!$contestLeaders): ?>
                         <li class="list-group-item bg-transparent text-muted small">No participants yet.</li>
                     <?php endif; foreach ($contestLeaders as $cl): ?>
-                        <li class="list-group-item bg-transparent text-light d-flex justify-content-between">
+                        <li class="list-group-item d-flex justify-content-between">
                             <span><?= e(mask_username($cl['username'])) ?></span>
-                            <span class="badge bg-secondary"><?= (int) $cl['new_refs'] ?> refs</span>
+                            <span class="badge badge-soft-secondary"><?= (int) $cl['new_refs'] ?> refs</span>
                         </li>
                     <?php endforeach; ?>
                 </ol>

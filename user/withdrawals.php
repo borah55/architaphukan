@@ -19,11 +19,14 @@ $totalPaid = (float) db_value(
 
 include __DIR__ . '/../includes/header.php';
 ?>
-<div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
-    <h2 class="mb-0"><i class="fa fa-wallet text-doge me-1"></i> Withdrawals</h2>
+<div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
     <div>
-        <span class="badge bg-secondary me-2">Total paid: <?= e(format_amount($totalPaid)) ?> <?= e(setting('faucetpay_currency','DOGE')) ?></span>
-        <a class="btn btn-sm btn-doge" href="<?= url('user/withdraw.php') ?>"><i class="fa fa-paper-plane me-1"></i> Withdraw referral balance</a>
+        <h2 class="mb-1 fw-bold"><i class="fa fa-wallet text-doge me-2"></i> Withdrawals</h2>
+        <p class="text-muted-2 mb-0 small">Claims are paid instantly. Referral / sponsor balance can be withdrawn manually.</p>
+    </div>
+    <div class="d-flex gap-2">
+        <span class="badge badge-soft-secondary align-self-center">Total paid: <?= e(format_amount($totalPaid)) ?> <?= e(setting('faucetpay_currency','DOGE')) ?></span>
+        <a class="btn btn-doge" href="<?= url('user/withdraw.php') ?>"><i class="fa fa-paper-plane me-1"></i> Withdraw balance</a>
     </div>
 </div>
 
@@ -45,7 +48,7 @@ include __DIR__ . '/../includes/header.php';
                     <td><?= e($r['currency']) ?></td>
                     <td><?php
                         $col = ['sent' => 'success', 'pending' => 'secondary', 'failed' => 'danger'][$r['status']] ?? 'secondary';
-                        ?><span class="badge bg-<?= $col ?>"><?= e($r['status']) ?></span></td>
+                        ?><span class="badge badge-soft-<?= $col ?>"><?= e($r['status']) ?></span></td>
                     <td class="small text-truncate" style="max-width:160px"><?= e($r['txid'] ?: '-') ?></td>
                     <td class="text-end small text-muted"><?= e($r['created_at']) ?></td>
                 </tr>

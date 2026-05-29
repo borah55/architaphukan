@@ -68,9 +68,9 @@ include __DIR__ . '/includes/header.php';
             <div class="card mb-3">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <span>
-                        <span class="badge bg-secondary me-1"><?= e($r['placement']) ?></span>
+                        <span class="badge badge-soft-secondary me-1"><?= e($r['placement']) ?></span>
                         <strong><?= e($r['name']) ?></strong>
-                        <?php if (!$r['is_active']): ?><span class="badge bg-danger ms-2">inactive</span><?php endif; ?>
+                        <?php if (!$r['is_active']): ?><span class="badge badge-soft-danger ms-2">inactive</span><?php endif; ?>
                     </span>
                     <span>
                         <form method="post" class="d-inline m-0">

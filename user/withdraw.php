@@ -78,9 +78,9 @@ include __DIR__ . '/../includes/header.php';
                 <?php if ($ok):    ?><div class="alert alert-success"><?= e($ok) ?></div><?php endif; ?>
 
                 <ul class="list-group list-group-flush mb-3">
-                    <li class="list-group-item bg-transparent text-light d-flex justify-content-between"><span>Available balance</span><strong class="text-doge"><?= e(format_amount($user['balance'])) ?> <?= e($currency) ?></strong></li>
-                    <li class="list-group-item bg-transparent text-light d-flex justify-content-between"><span>Min withdrawal</span><span><?= e(format_amount($minWithdraw)) ?> <?= e($currency) ?></span></li>
-                    <li class="list-group-item bg-transparent text-light d-flex justify-content-between"><span>FaucetPay email</span><span class="small"><?= e($user['faucetpay_email']) ?></span></li>
+                    <li class="list-group-item d-flex justify-content-between"><span>Available balance</span><strong class="text-doge"><?= e(format_amount($user['balance'])) ?> <?= e($currency) ?></strong></li>
+                    <li class="list-group-item d-flex justify-content-between"><span>Min withdrawal</span><span><?= e(format_amount($minWithdraw)) ?> <?= e($currency) ?></span></li>
+                    <li class="list-group-item d-flex justify-content-between"><span>FaucetPay email</span><span class="small"><?= e($user['faucetpay_email']) ?></span></li>
                 </ul>
 
                 <form method="post">

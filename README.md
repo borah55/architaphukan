@@ -77,10 +77,21 @@ required.
 
 After importing `sql/schema.sql` you can log in with:
 
-- **Username**: `admin`
-- **Password**: `admin123`
+- **FaucetPay email**: `admin@example.com`
+- **PIN**: `123456`
 
 **Change this immediately** from Admin -> Users.
+
+## Authentication
+
+The site uses a clean **FaucetPay email + numeric PIN** model:
+
+- Sign up requires only your FaucetPay email and a configurable
+  4-8 digit PIN (default 6 digits).
+- The same FaucetPay email is used for login, password (PIN) reset,
+  and instant DOGE payouts. There is **no separate site email or
+  password**.
+- PINs are bcrypt-hashed and never stored in plain text.
 
 ## How payouts work
 

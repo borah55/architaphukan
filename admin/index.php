@@ -59,12 +59,12 @@ include __DIR__ . '/includes/header.php';
         <div class="card">
             <div class="card-header"><i class="fa fa-bell text-doge me-1"></i> Quick stats</div>
             <ul class="list-group list-group-flush">
-                <li class="list-group-item bg-transparent text-light d-flex justify-content-between"><span>Unread messages</span><a class="badge bg-warning text-dark" href="messages.php"><?= number_format($pendingMessages) ?></a></li>
-                <li class="list-group-item bg-transparent text-light d-flex justify-content-between"><span>Faucet enabled</span><span class="badge bg-<?= setting('faucet_enabled','1') === '1' ? 'success' : 'danger' ?>"><?= setting('faucet_enabled','1') === '1' ? 'YES' : 'NO' ?></span></li>
-                <li class="list-group-item bg-transparent text-light d-flex justify-content-between"><span>Maintenance mode</span><span class="badge bg-<?= setting('maintenance_mode','0') === '1' ? 'danger' : 'success' ?>"><?= setting('maintenance_mode','0') === '1' ? 'ON' : 'OFF' ?></span></li>
-                <li class="list-group-item bg-transparent text-light d-flex justify-content-between"><span>Reward / claim</span><span><?= e(format_amount(setting('claim_amount','0'))) ?> <?= e($currency) ?></span></li>
-                <li class="list-group-item bg-transparent text-light d-flex justify-content-between"><span>Cooldown</span><span><?= (int) setting('claim_interval_seconds','300') ?> sec</span></li>
-                <li class="list-group-item bg-transparent text-light d-flex justify-content-between"><span>Daily claim limit</span><span><?= (int) setting('daily_claim_limit','200') ?></span></li>
+                <li class="list-group-item d-flex justify-content-between align-items-center"><span>Unread messages</span><a class="badge badge-soft-warning text-decoration-none" href="messages.php"><?= number_format($pendingMessages) ?></a></li>
+                <li class="list-group-item d-flex justify-content-between"><span>Faucet enabled</span><span class="badge badge-soft-<?= setting('faucet_enabled','1') === '1' ? 'success' : 'danger' ?>"><?= setting('faucet_enabled','1') === '1' ? 'YES' : 'NO' ?></span></li>
+                <li class="list-group-item d-flex justify-content-between"><span>Maintenance mode</span><span class="badge badge-soft-<?= setting('maintenance_mode','0') === '1' ? 'danger' : 'success' ?>"><?= setting('maintenance_mode','0') === '1' ? 'ON' : 'OFF' ?></span></li>
+                <li class="list-group-item d-flex justify-content-between"><span>Reward / claim</span><span><?= e(format_amount(setting('claim_amount','0'))) ?> <?= e($currency) ?></span></li>
+                <li class="list-group-item d-flex justify-content-between"><span>Cooldown</span><span><?= (int) setting('claim_interval_seconds','300') ?> sec</span></li>
+                <li class="list-group-item d-flex justify-content-between"><span>Daily claim limit</span><span><?= (int) setting('daily_claim_limit','200') ?></span></li>
             </ul>
         </div>
     </div>

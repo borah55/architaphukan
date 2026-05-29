@@ -86,12 +86,13 @@ if ($claimsToday >= $dailyLimit) {
 // 6. one-claim-per-IP rule (prevents two users sharing same IP from
 //    claiming back-to-back within the cooldown window) ----------------
 if (setting('one_claim_per_ip', '1') === '1') {
+    $cooldown = max(1, (int) $claimInterval);
     $ipClaim = db_one(
         "SELECT user_id, created_at FROM claims
          WHERE ip_address = :ip
-           AND created_at > (NOW() - INTERVAL :s SECOND)
+           AND created_at > (NOW() - INTERVAL " . $cooldown . " SECOND)
          ORDER BY id DESC LIMIT 1",
-        [':ip' => $ip, ':s' => $claimInterval]
+        [':ip' => $ip]
     );
     if ($ipClaim && (int) $ipClaim['user_id'] !== (int) $user['id']) {
         log_event('ip_claim_block', "Same-IP claim blocked from $ip", (int) $user['id']);

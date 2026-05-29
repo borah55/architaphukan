@@ -67,7 +67,7 @@ $off  = ($page - 1) * $per;
 $where  = '';
 $params = [];
 if ($q !== '') {
-    $where  = ' WHERE username LIKE :q OR email LIKE :q OR faucetpay_email LIKE :q OR signup_ip LIKE :q ';
+    $where  = ' WHERE username LIKE :q OR faucetpay_email LIKE :q OR signup_ip LIKE :q ';
     $params[':q'] = '%' . $q . '%';
 }
 $total = (int) db_value('SELECT COUNT(*) FROM users' . $where, $params);
@@ -80,8 +80,9 @@ include __DIR__ . '/includes/header.php';
 ?>
 <form class="mb-3" method="get">
     <div class="input-group">
-        <input type="text" name="q" class="form-control" placeholder="Search username, email, IP..." value="<?= e($q) ?>">
-        <button class="btn btn-doge"><i class="fa fa-search"></i></button>
+        <span class="input-group-text"><i class="fa fa-search"></i></span>
+        <input type="text" name="q" class="form-control" placeholder="Search username, FaucetPay email, IP..." value="<?= e($q) ?>">
+        <button class="btn btn-doge">Search</button>
     </div>
 </form>
 
@@ -89,31 +90,32 @@ include __DIR__ . '/includes/header.php';
     <div class="table-responsive">
         <table class="table table-sm align-middle mb-0">
             <thead><tr>
-                <th>#</th><th>Username</th><th>Email</th><th>FaucetPay</th>
-                <th>IP</th><th>Balance</th><th>Status</th><th>Joined</th><th>Actions</th>
+                <th>#</th><th>Username</th><th>FaucetPay email</th>
+                <th>IP</th><th>Balance</th><th>Status</th><th>Joined</th><th></th>
             </tr></thead>
             <tbody>
             <?php if (!$rows): ?>
-                <tr><td colspan="9" class="text-center text-muted py-3">No users found.</td></tr>
+                <tr><td colspan="8" class="text-center text-muted-2 py-4">No users found.</td></tr>
             <?php endif; foreach ($rows as $u): ?>
                 <tr>
                     <td>#<?= (int) $u['id'] ?></td>
                     <td>
                         <strong><?= e($u['username']) ?></strong>
-                        <?php if ((int) $u['is_admin'] === 1): ?><span class="badge bg-warning text-dark ms-1">admin</span><?php endif; ?>
+                        <?php if ((int) $u['is_admin'] === 1): ?>
+                            <span class="badge badge-soft-warning ms-1">admin</span>
+                        <?php endif; ?>
                     </td>
-                    <td class="small"><?= e($u['email']) ?></td>
                     <td class="small"><?= e($u['faucetpay_email']) ?></td>
-                    <td class="small text-muted"><?= e($u['signup_ip']) ?></td>
+                    <td class="small text-muted-2"><?= e($u['signup_ip']) ?></td>
                     <td class="text-doge"><?= e(format_amount($u['balance'])) ?></td>
                     <td>
                         <?php $col = ['active' => 'success', 'banned' => 'danger', 'pending' => 'secondary'][$u['status']] ?? 'secondary'; ?>
-                        <span class="badge bg-<?= $col ?>"><?= e($u['status']) ?></span>
+                        <span class="badge badge-soft-<?= $col ?>"><?= e($u['status']) ?></span>
                     </td>
-                    <td class="small text-muted"><?= e(date('Y-m-d', strtotime($u['created_at']))) ?></td>
+                    <td class="small text-muted-2"><?= e(date('Y-m-d', strtotime($u['created_at']))) ?></td>
                     <td>
                         <div class="dropdown">
-                            <button class="btn btn-sm btn-outline-light" data-bs-toggle="dropdown"><i class="fa fa-ellipsis-vertical"></i></button>
+                            <button class="btn btn-sm btn-glass" data-bs-toggle="dropdown"><i class="fa fa-ellipsis-vertical"></i></button>
                             <ul class="dropdown-menu dropdown-menu-end">
                                 <li><a class="dropdown-item" href="user_edit.php?id=<?= (int) $u['id'] ?>"><i class="fa fa-pen me-1"></i> Edit</a></li>
                                 <li><hr class="dropdown-divider"></li>
