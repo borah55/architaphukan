@@ -14,30 +14,32 @@ shared hosting account. No VPS, Composer, or Node.js is required.
 ## 2. Upload the files
 
 1. In cPanel open **File Manager**.
-2. Go to `public_html` (or a subdirectory if you want to install in
-   `example.com/faucet`).
+2. Go to `public_html` (or a subdirectory).
 3. Upload everything from this project. Make sure hidden files
-   (`.htaccess`) are uploaded too (in File Manager: Settings -> "Show
-   hidden files").
+   (`.htaccess`) are uploaded too.
 
 ## 3. Create the database
 
 1. cPanel -> **MySQL Databases**.
-2. Create a new database, e.g. `myacct_faucet`.
-3. Create a new MySQL user with a strong password.
+2. Create a database, e.g. `myacct_faucet`.
+3. Create a MySQL user with a strong password.
 4. Add the user to the database with **ALL PRIVILEGES**.
 
 ## 4. Import the schema
 
 1. cPanel -> **phpMyAdmin** -> select your database.
-2. Click **Import** and choose the file `sql/schema.sql`.
-3. Click **Go**. You should see all tables and the default settings
-   created.
+2. Click **Import** and choose `sql/schema.sql` (fresh install).
+3. Click **Go**.
+
+> **Already running v1?** Run `sql/migrate_v1_to_v2.sql` instead. It
+> drops the old separate `email` column, renames `password_hash` to
+> `pin_hash`, and resets every PIN to `123456` so users can log in and
+> change it.
 
 ## 5. Configure the site
 
-1. In File Manager copy `config/config.sample.php` to `config/config.php`.
-2. Edit `config/config.php` and set:
+1. Copy `config/config.sample.php` to `config/config.php`.
+2. Edit it:
 
    ```php
    define('DB_HOST', 'localhost');
@@ -47,110 +49,92 @@ shared hosting account. No VPS, Composer, or Node.js is required.
 
    define('SITE_URL',   'https://faucet.example.com');
    define('APP_SECRET', 'long-random-string-replace-me');
-   define('COOKIE_SECURE', true);   // if your site is served over HTTPS
+   define('COOKIE_SECURE', true);   // if served over HTTPS
    define('DEBUG', false);          // ALWAYS off in production
    ```
 
-3. Save the file. The `.htaccess` files inside `/config` and `/includes`
-   already block direct access to PHP files in those folders.
-
 ## 6. First login
 
-1. Visit your site, e.g. `https://faucet.example.com/`.
-2. Click **Login** and use the default admin credentials:
+Visit your site and click **Sign in**.
 
-   - **Username:** `admin`
-   - **Password:** `admin123`
+- **FaucetPay email**: `admin@example.com`
+- **PIN**: `123456`
 
-3. Go to **Admin Panel -> Users -> admin -> Edit** and change the
-   password immediately. Also update the email and FaucetPay email.
+You will be redirected to the admin panel. Open **Users → admin →
+Edit** and change the FaucetPay email and reset the PIN immediately.
+
+> Authentication uses **only the FaucetPay email + a 6-digit PIN**.
+> There is no separate site email/password. Payouts and PIN reset
+> emails go to the same FaucetPay email you sign up with.
 
 ## 7. Connect FaucetPay
 
-1. In your FaucetPay account, go to
-   **Account -> Webmaster Tools -> API**.
+1. In FaucetPay: **Account → Webmaster Tools → API**.
 2. Copy your **API Key**.
-3. In the admin panel, open **Settings -> FaucetPay API**.
-4. Paste the API key, choose **DOGE** (or any other supported coin),
-   click **Save settings**.
-5. Open **Admin -> FaucetPay API** in the sidebar and click
-   **Check balance** to confirm the integration works.
-6. Send some funds to your FaucetPay wallet so the faucet can pay out.
+3. Admin panel → **Settings → FaucetPay API**, paste the key, choose
+   **DOGE** (or another supported coin), save.
+4. Admin panel → **FaucetPay API**: click **Check balance** to verify.
 
 ## 8. Configure the faucet
 
-In **Admin -> Settings -> Faucet** set the values you want:
+In **Admin → Settings → Faucet** set:
 
-- **Reward / claim**: e.g. `0.0005`
-- **Cooldown (seconds)**: `300` (= 5 minutes)
-- **Daily claim limit**: `200`
-- **Referral %**: `20`
+- Reward / claim (e.g. `0.0005`)
+- Cooldown seconds (e.g. `300`)
+- Daily claim limit (e.g. `200`)
+- Referral % (e.g. `20`)
 
-In **Admin -> Settings -> Security** turn on:
+In **Settings → Security** turn on:
 
 - One account per IP
 - One claim per IP
-- VPN / proxy detection
-- reCAPTCHA (paste your site & secret keys)
-- Login attempt limits
+- VPN / proxy detection (optional, requires outbound network)
+- reCAPTCHA (paste site & secret keys)
+- PIN length (4-8, default 6)
 
 ## 9. Optional - reCAPTCHA v2
 
-1. Get keys at https://www.google.com/recaptcha/admin (choose v2,
-   "I'm not a robot").
-2. In admin panel: **Settings -> Security**, enable reCAPTCHA and paste
-   the site key & secret key.
+1. Get keys at https://www.google.com/recaptcha/admin (v2, "I'm not a robot").
+2. Admin → **Settings → Security**, enable and paste both keys.
 
 ## 10. Optional - Cron job
 
-Set up a daily cron in cPanel -> **Cron Jobs**:
+cPanel → **Cron Jobs** → Add daily:
 
 ```
 0 3 * * * /usr/local/bin/php /home/USERNAME/public_html/cron/clean.php > /dev/null 2>&1
 ```
 
-This trims old logs / login attempts / sponsor clicks and updates contest
-statuses (upcoming -> active -> ended).
+Trims old logs/login attempts/sponsor clicks and rolls contest
+statuses (upcoming → active → ended).
 
-You can also call it via web with a secret key:
+You can also call it via web with the secret key:
 
 ```
 https://faucet.example.com/cron/clean.php?key=YOUR_APP_SECRET
 ```
 
-## 11. Optional - Customize content
+## 11. Customize content
 
-In **Admin -> Content** you can edit:
+- **Admin → Pages** edits Homepage / Terms / Privacy text.
+- **Admin → FAQ** to add/edit/delete FAQ items.
+- **Admin → Announcement** to show a banner at the top of every page.
+- **Admin → Advertisements** to add ads in 6 placements (header,
+  sidebar, dashboard, popup, footer, between-content).
+- **Admin → Sponsor links** for click-reward sponsor entries.
+- **Admin → Referral contests** for time-bound referral leaderboards.
 
-- Homepage intro text
-- Terms & Conditions
-- Privacy Policy
+## 12. Going-live checklist
 
-In **Admin -> FAQ** you can add/edit/delete FAQ entries.
-
-In **Admin -> Announcement** you can show a yellow announcement bar at
-the top of every page.
-
-## 12. SEO
-
-The site already includes:
-
-- `robots.txt` (edit it to update the Sitemap URL)
-- `/sitemap.xml` -> rewritten to `/sitemap.xml.php` by `.htaccess`
-- Bootstrap 5 responsive layout
-- Per-page `<title>` and meta description from settings
-
-## 13. Going live checklist
-
-- [ ] `config/config.php` has correct DB credentials and SITE_URL
+- [ ] `config/config.php` filled in with correct DB credentials & SITE_URL
 - [ ] `APP_SECRET` is a long random string
-- [ ] `DEBUG` is set to `false`
-- [ ] Admin password has been changed
-- [ ] FaucetPay API key is configured and balance is funded
+- [ ] `DEBUG = false`
+- [ ] Default admin PIN changed
+- [ ] FaucetPay API key configured and balance funded
 - [ ] reCAPTCHA enabled with valid keys
-- [ ] Privacy Policy / Terms text edited
-- [ ] HTTPS enforced (cPanel -> SSL/TLS Status -> AutoSSL)
-- [ ] `COOKIE_SECURE = true` once HTTPS is confirmed
+- [ ] Privacy & Terms text customised
+- [ ] HTTPS enforced (cPanel → SSL/TLS Status → AutoSSL)
+- [ ] `COOKIE_SECURE = true` once HTTPS is verified
 - [ ] Cron job scheduled
 
-That's it. Enjoy your new Dogecoin faucet!
+That's it - enjoy your Dogecoin faucet!

@@ -27,7 +27,7 @@ include __DIR__ . '/includes/header.php';
             <div class="d-flex justify-content-between flex-wrap gap-2">
                 <div>
                     <strong><?= e($m['subject']) ?></strong>
-                    <?php if (!$m['is_read']): ?><span class="badge bg-warning text-dark ms-1">new</span><?php endif; ?>
+                    <?php if (!$m['is_read']): ?><span class="badge badge-soft-warning ms-1">new</span><?php endif; ?>
                     <div class="small text-muted"><?= e($m['name']) ?> &lt;<?= e($m['email']) ?>&gt; &middot; <?= e($m['created_at']) ?> &middot; <?= e($m['ip_address']) ?></div>
                 </div>
                 <div>

@@ -60,13 +60,15 @@ function enforce_ip_blacklist(): void {
 /* ------------------------------------------------------------------ */
 
 function login_attempts_recent(string $identifier, string $ip): int {
-    $minutes = (int) setting('login_lockout_minutes', 15);
+    // INTERVAL with bound params is not supported in non-emulated PDO,
+    // so we inline the (sanitized) integer.
+    $minutes = max(1, (int) setting('login_lockout_minutes', 15));
     $row = db_one(
         'SELECT COUNT(*) AS c FROM login_attempts
          WHERE (identifier = :id OR ip_address = :ip)
            AND success = 0
-           AND created_at > (NOW() - INTERVAL :m MINUTE)',
-        [':id' => $identifier, ':ip' => $ip, ':m' => $minutes]
+           AND created_at > (NOW() - INTERVAL ' . $minutes . ' MINUTE)',
+        [':id' => $identifier, ':ip' => $ip]
     );
     return (int) ($row['c'] ?? 0);
 }

@@ -51,7 +51,7 @@ include __DIR__ . '/includes/header.php';
             <?php endif; foreach ($rows as $l): ?>
                 <tr>
                     <td>#<?= (int) $l['id'] ?></td>
-                    <td><span class="badge bg-secondary"><?= e($l['type']) ?></span></td>
+                    <td><span class="badge badge-soft-secondary"><?= e($l['type']) ?></span></td>
                     <td><?= $l['user_id'] ? '<a class="link-light" href="user_edit.php?id=' . (int) $l['user_id'] . '">#' . (int) $l['user_id'] . '</a>' : '-' ?></td>
                     <td class="small text-muted"><?= e($l['ip_address']) ?></td>
                     <td class="small"><?= e($l['message']) ?></td>

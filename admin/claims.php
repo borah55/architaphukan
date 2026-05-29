@@ -49,7 +49,7 @@ include __DIR__ . '/includes/header.php';
                     <td><?= e($c['currency']) ?></td>
                     <td class="small text-muted"><?= e($c['ip_address']) ?></td>
                     <td><?php $col = ['sent'=>'success','pending'=>'secondary','failed'=>'danger'][$c['payout_status']] ?? 'secondary'; ?>
-                        <span class="badge bg-<?= $col ?>"><?= e($c['payout_status']) ?></span></td>
+                        <span class="badge badge-soft-<?= $col ?>"><?= e($c['payout_status']) ?></span></td>
                     <td class="small text-truncate" style="max-width:120px"><?= e($c['payout_txid'] ?: '-') ?></td>
                     <td class="small text-muted"><?= e($c['created_at']) ?></td>
                 </tr>

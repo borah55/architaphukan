@@ -132,6 +132,49 @@ function mask_username(string $u): string {
 }
 
 /* ------------------------------------------------------------------ */
+/* PIN helpers                                                        */
+/* ------------------------------------------------------------------ */
+
+function pin_length(): int {
+    $n = (int) setting('pin_length', 6);
+    return max(4, min(8, $n));
+}
+
+function pin_validate(string $pin): bool {
+    $len = pin_length();
+    return (bool) preg_match('/^\d{' . $len . '}$/', $pin);
+}
+
+function pin_hash(string $pin): string {
+    return password_hash($pin, PASSWORD_BCRYPT);
+}
+
+function pin_verify(string $pin, string $hash): bool {
+    return password_verify($pin, $hash);
+}
+
+/* ------------------------------------------------------------------ */
+/* Username helpers                                                   */
+/* ------------------------------------------------------------------ */
+
+function username_suggest_from_email(string $email): string {
+    $base = preg_replace('/[^a-z0-9_]/i', '', strstr($email, '@', true) ?: '');
+    $base = substr($base, 0, 14);
+    if (strlen($base) < 3) $base = 'user';
+    $candidate = $base;
+    $i = 1;
+    while (db_one('SELECT id FROM users WHERE username = :u', [':u' => $candidate])) {
+        $candidate = $base . $i;
+        $i++;
+        if ($i > 9999) {
+            $candidate = $base . substr(bin2hex(random_bytes(3)), 0, 6);
+            break;
+        }
+    }
+    return $candidate;
+}
+
+/* ------------------------------------------------------------------ */
 /* Logging                                                            */
 /* ------------------------------------------------------------------ */
 

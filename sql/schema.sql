@@ -1,7 +1,12 @@
 -- =====================================================================
--- Dogecoin Faucet - Database Schema
+-- Doge Faucet - Database Schema (v2: FaucetPay email + PIN)
 -- Compatible with MySQL 5.7+ / MariaDB 10.2+
 -- Import this file via phpMyAdmin or MySQL CLI on your cPanel hosting.
+--
+-- Authentication model:
+--   - User logs in with their FaucetPay email + a numeric PIN (6 digits)
+--   - There is NO separate site email -- payouts and password reset
+--     both go to the FaucetPay email.
 -- =====================================================================
 
 SET NAMES utf8mb4;
@@ -13,9 +18,8 @@ SET FOREIGN_KEY_CHECKS = 0;
 CREATE TABLE IF NOT EXISTS `users` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `username` VARCHAR(32) NOT NULL,
-  `email` VARCHAR(120) NOT NULL,
-  `password_hash` VARCHAR(255) NOT NULL,
   `faucetpay_email` VARCHAR(120) NOT NULL,
+  `pin_hash` VARCHAR(255) NOT NULL,
   `referrer_id` INT UNSIGNED NULL DEFAULT NULL,
   `balance` DECIMAL(18,8) NOT NULL DEFAULT 0,
   `referral_balance` DECIMAL(18,8) NOT NULL DEFAULT 0,
@@ -25,15 +29,13 @@ CREATE TABLE IF NOT EXISTS `users` (
   `last_ip` VARCHAR(45) DEFAULT NULL,
   `status` ENUM('active','banned','pending') NOT NULL DEFAULT 'active',
   `is_admin` TINYINT(1) NOT NULL DEFAULT 0,
-  `email_verified` TINYINT(1) NOT NULL DEFAULT 0,
-  `verify_token` VARCHAR(64) DEFAULT NULL,
   `reset_token` VARCHAR(64) DEFAULT NULL,
   `reset_expires` DATETIME DEFAULT NULL,
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `last_login_at` DATETIME DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_username` (`username`),
-  UNIQUE KEY `uniq_email` (`email`),
+  UNIQUE KEY `uniq_faucetpay_email` (`faucetpay_email`),
   KEY `idx_referrer` (`referrer_id`),
   KEY `idx_status` (`status`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -142,7 +144,7 @@ CREATE TABLE IF NOT EXISTS `sponsor_links` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ---------------------------------------------------------------------
--- SPONSOR CLICK TRACKING (per IP/user, anti-abuse)
+-- SPONSOR CLICK TRACKING
 -- ---------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `sponsor_clicks` (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -157,7 +159,7 @@ CREATE TABLE IF NOT EXISTS `sponsor_clicks` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ---------------------------------------------------------------------
--- SETTINGS (key/value)
+-- SETTINGS
 -- ---------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `settings` (
   `name` VARCHAR(80) NOT NULL,
@@ -167,7 +169,7 @@ CREATE TABLE IF NOT EXISTS `settings` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ---------------------------------------------------------------------
--- LOGS (general activity / fraud / failed logins)
+-- LOGS
 -- ---------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `logs` (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -183,7 +185,7 @@ CREATE TABLE IF NOT EXISTS `logs` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ---------------------------------------------------------------------
--- LOGIN ATTEMPTS (for brute force lockout)
+-- LOGIN ATTEMPTS
 -- ---------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `login_attempts` (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -268,7 +270,7 @@ INSERT INTO `settings` (`name`, `value`) VALUES
 ('recaptcha_enabled','0'),
 ('recaptcha_site_key',''),
 ('recaptcha_secret_key',''),
-('vpn_check_enabled','1'),
+('vpn_check_enabled','0'),
 ('homepage_text','Welcome to our Dogecoin faucet. Claim every 5 minutes and earn free DOGE.'),
 ('terms_text','Terms and conditions.'),
 ('privacy_text','Privacy policy.'),
@@ -277,28 +279,31 @@ INSERT INTO `settings` (`name`, `value`) VALUES
 ('cookie_notice_enabled','1'),
 ('analytics_code',''),
 ('login_max_attempts','5'),
-('login_lockout_minutes','15');
+('login_lockout_minutes','15'),
+('pin_length','6');
 
 -- ---------------------------------------------------------------------
 -- DEFAULT ADMIN USER
--- Username: admin
--- Password: admin123  (CHANGE IT IMMEDIATELY AFTER LOGIN)
--- The hash below corresponds to "admin123".
+--   FaucetPay email: admin@example.com
+--   PIN:             123456
+-- CHANGE THE PIN IMMEDIATELY AFTER FIRST LOGIN.
 -- ---------------------------------------------------------------------
 INSERT INTO `users`
-(`username`,`email`,`password_hash`,`faucetpay_email`,`signup_ip`,`status`,`is_admin`,`email_verified`)
+(`username`,`faucetpay_email`,`pin_hash`,`signup_ip`,`status`,`is_admin`)
 VALUES
 ('admin','admin@example.com',
- '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
- 'admin@example.com','127.0.0.1','active',1,1);
+ '$2y$10$Kg4ISzuaGHmSN/YzY71yc.8VV0y24Zwhzi3NsI9CW7MMk1kHIvRa6',
+ '127.0.0.1','active',1);
 
 -- ---------------------------------------------------------------------
 -- SAMPLE FAQ
 -- ---------------------------------------------------------------------
 INSERT INTO `faq` (`question`,`answer`,`sort_order`,`is_active`) VALUES
 ('What is a Dogecoin faucet?','A faucet is a website that gives away small amounts of cryptocurrency to users for free. You can claim DOGE every few minutes.',1,1),
-('How do I get paid?','We pay instantly through FaucetPay. Just register at faucetpay.io and add your FaucetPay email when you sign up.',2,1),
-('Is there a minimum withdrawal?','No. Every claim is sent instantly to your FaucetPay account.',3,1),
-('How does the referral system work?','Share your referral link. When your referrals claim, you earn a percentage of every claim they make for life.',4,1);
+('How do I sign up?','Just enter your FaucetPay email and pick a 6-digit PIN. There is no separate site password to remember.',2,1),
+('How do I get paid?','We pay instantly through FaucetPay. The same email you signed up with is where your DOGE will be sent.',3,1),
+('Is there a minimum withdrawal?','No. Every claim is sent instantly to your FaucetPay account.',4,1),
+('I forgot my PIN, what do I do?','Click "Forgot PIN" on the login page. We will send a reset link to your FaucetPay email.',5,1),
+('How does the referral system work?','Share your referral link. When your referrals claim, you earn a percentage of every claim they make for life.',6,1);
 
 SET FOREIGN_KEY_CHECKS = 1;

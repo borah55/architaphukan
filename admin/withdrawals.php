@@ -28,7 +28,7 @@ include __DIR__ . '/includes/header.php';
             <option value="failed" <?= $status === 'failed' ? 'selected' : '' ?>>Failed</option>
         </select>
     </form>
-    <span class="badge bg-secondary align-self-center">Total sent: <?= e(format_amount($totalSent)) ?> <?= e(setting('faucetpay_currency', 'DOGE')) ?></span>
+    <span class="badge badge-soft-secondary align-self-center">Total sent: <?= e(format_amount($totalSent)) ?> <?= e(setting('faucetpay_currency', 'DOGE')) ?></span>
 </div>
 
 <div class="card">
@@ -45,7 +45,7 @@ include __DIR__ . '/includes/header.php';
                     <td class="small"><?= e($w['faucetpay_email']) ?></td>
                     <td><?= e(format_amount($w['amount'])) ?> <?= e($w['currency']) ?></td>
                     <td><?php $col = ['sent'=>'success','pending'=>'secondary','failed'=>'danger'][$w['status']] ?? 'secondary'; ?>
-                        <span class="badge bg-<?= $col ?>"><?= e($w['status']) ?></span></td>
+                        <span class="badge badge-soft-<?= $col ?>"><?= e($w['status']) ?></span></td>
                     <td class="small text-truncate" style="max-width:120px"><?= e($w['txid'] ?: '-') ?></td>
                     <td class="small text-muted"><?= e($w['created_at']) ?></td>
                 </tr>
