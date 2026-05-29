@@ -1,0 +1,16 @@
+# Secrets / per-host config
+config/config.php
+
+# Editor / OS
+.DS_Store
+Thumbs.db
+*.swp
+*.bak
+
+# Logs
+*.log
+
+# Uploads (keep dir, ignore content)
+uploads/*
+!uploads/.htaccess
+!uploads/.gitkeep

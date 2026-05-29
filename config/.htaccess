@@ -1,0 +1,7 @@
+# Block direct access to /config
+Order allow,deny
+Deny from all
+
+<IfModule mod_authz_core.c>
+    Require all denied
+</IfModule>

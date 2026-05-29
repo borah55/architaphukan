@@ -1,0 +1,91 @@
+/* ===========================================================
+   Doge Faucet - Custom styles
+   =========================================================== */
+
+:root {
+    --doge-yellow: #f7c948;
+    --doge-orange: #ed8936;
+    --doge-bg: #0f172a;
+    --doge-card: #1e293b;
+}
+
+html, body { min-height: 100%; }
+body {
+    background:
+        radial-gradient(1200px 600px at 0% -10%, rgba(247,201,72,0.08), transparent 60%),
+        radial-gradient(1200px 600px at 100% 110%, rgba(237,137,54,0.10), transparent 60%),
+        var(--doge-bg);
+    color: #e2e8f0;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Layout */
+main { flex: 1 0 auto; }
+
+/* Hero */
+.hero {
+    background: linear-gradient(135deg, #1e293b, #0f172a);
+    border: 1px solid rgba(247,201,72,0.25);
+    border-radius: 1rem;
+    padding: 3rem 2rem;
+}
+.hero h1 .text-doge { color: var(--doge-yellow); }
+
+/* Cards */
+.card { background-color: var(--doge-card); border: 1px solid rgba(255,255,255,0.06); }
+.card-header { background-color: rgba(255,255,255,0.03); border-bottom-color: rgba(255,255,255,0.06); }
+
+.stat-card {
+    background: linear-gradient(135deg, #1e293b, #111827);
+    border: 1px solid rgba(247,201,72,0.2);
+    border-radius: .75rem;
+    padding: 1.25rem;
+}
+.stat-card .stat-value { font-size: 1.5rem; font-weight: 700; color: var(--doge-yellow); }
+.stat-card .stat-label { color: #94a3b8; font-size: .85rem; text-transform: uppercase; letter-spacing: .5px; }
+.stat-card .icon { font-size: 2rem; opacity: .7; color: var(--doge-orange); }
+
+/* Buttons */
+.btn-doge {
+    background: linear-gradient(135deg, var(--doge-yellow), var(--doge-orange));
+    color: #1f2937;
+    border: 0;
+    font-weight: 700;
+}
+.btn-doge:hover { color: #000; filter: brightness(1.05); }
+
+/* Tables */
+.table { color: #e2e8f0; }
+.table thead th { color: #cbd5e1; border-bottom-color: rgba(255,255,255,0.1); }
+.table > :not(caption) > * > * { border-bottom-color: rgba(255,255,255,0.06); }
+
+/* Announcement / banner */
+.announcement-bar { background: linear-gradient(90deg, var(--doge-orange), var(--doge-yellow)); color: #1f2937; font-weight: 600; }
+
+/* Ad slots */
+.ad-slot { background: rgba(255,255,255,0.03); border-top: 1px solid rgba(255,255,255,0.05); border-bottom: 1px solid rgba(255,255,255,0.05); }
+
+/* Claim timer */
+#claim-timer { font-size: 2.5rem; font-weight: 700; color: var(--doge-yellow); letter-spacing: 2px; }
+.claim-amount { font-size: 1.6rem; color: var(--doge-yellow); font-weight: 700; }
+
+/* Sponsor list */
+.sponsor-card { transition: transform .15s; }
+.sponsor-card:hover { transform: translateY(-3px); }
+
+/* Footer */
+footer a { text-decoration: none; }
+footer a:hover { color: var(--doge-yellow) !important; }
+
+/* Forms */
+.form-control, .form-select { background-color: #0b1220; border-color: rgba(255,255,255,0.1); color: #e2e8f0; }
+.form-control:focus, .form-select:focus { background-color: #0b1220; color: #fff; border-color: var(--doge-yellow); box-shadow: 0 0 0 .2rem rgba(247,201,72,0.25); }
+
+/* Badges */
+.badge-doge { background: var(--doge-yellow); color: #1f2937; }
+
+/* Misc */
+a { color: var(--doge-yellow); }
+a:hover { color: var(--doge-orange); }
+.text-doge { color: var(--doge-yellow) !important; }
